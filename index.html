@@ -1,10 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yellowblack Studio</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding-top: 80px;
+        }
         .topbar {
             display: flex;
             align-items: center;
@@ -21,12 +28,74 @@
             height: 40px;
             width: auto;
         }
+        /* Estilo do botão no estilo Windows XP */
+        .xp-button {
+            font-size: 14px;
+            font-weight: bold;
+            padding: 10px 20px;
+            background: linear-gradient(to top, #e3e3e3 0%, #ffffff 100%);
+            border: 2px solid #b0b0b0;
+            border-radius: 4px;
+            box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+            color: #000;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        /* Efeito de botão pressionado */
+        .xp-button:active {
+            background: #b3b3b3;
+            box-shadow: inset 1px 1px 5px rgba(0, 0, 0, 0.5);
+            border: 2px solid #808080;
+        }
+        /* Efeito de hover */
+        .xp-button:hover {
+            background: #f5f5f5;
+        }
     </style>
 </head>
 <body>
     <div class="topbar">
         <img src="logo.png" alt="Logo">
     </div>
-    <button>Videos</button>
+
+    <h1>Yellowblack Studio</h1>
+
+    <!-- Exemplo de botão Windows XP -->
+    <button class="xp-button" id="google-login-btn">Login com Google</button>
+
 </body>
 </html>
+<script>
+    // Configuração do Firebase (substitua pelas suas credenciais)
+    const firebaseConfig = {
+    apiKey: "AIzaSyBFtUf3dD8waJbciCEkt0AoZnnXXwOGZ0U",
+    authDomain: "yellowblackstudios.firebaseapp.com",
+    projectId: "yellowblackstudios",
+    storageBucket: "yellowblackstudios.firebasestorage.app",
+    messagingSenderId: "774378529860",
+    appId: "1:774378529860:web:804f542453da3649c70811",
+    measurementId: "G-KBG7XX64VM"
+    };
+
+    // Inicializa o Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    // Função para autenticação com o Google
+    const googleProvider = new firebase.auth.GoogleAuthProvider();
+
+    function loginWithGoogle() {
+        auth.signInWithPopup(googleProvider)
+            .then((result) => {
+                const user = result.user;
+                console.log("Usuário logado:", user.displayName);
+                // Você pode redirecionar o usuário para outra página ou mostrar a tela inicial
+            })
+            .catch((error) => {
+                console.error("Erro no login:", error);
+            });
+    }
+
+    // Event Listener no botão
+    document.getElementById("google-login-btn").addEventListener("click", loginWithGoogle);
+</script>
