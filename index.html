@@ -91,6 +91,26 @@
             margin-top: 20px;
         }
 
+        /* Estilo para o menu de configurações */
+        .settings-menu {
+            display: none;
+            background-color: #fff;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .settings-menu a {
+            display: block;
+            margin: 10px 0;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .settings-menu a:hover {
+            color: #000;
+        }
     </style>
 </head>
 <body>
@@ -109,14 +129,17 @@
         <!-- Menu que aparecerá após login -->
         <div class="menu" id="user-menu">
             <h2>Bem-vindo ao Yellowblack Studio!</h2>
-            <div class="settings">
-                <h3>Configurações</h3>
-                <a href="#" id="logout-btn">Deslogar</a>
-            </div>
+            <button class="xp-button" id="settings-btn">Configurações</button>
         </div>
 
         <!-- Mensagem para usuário logado -->
         <div class="logged-in-message" id="logged-in-message"></div>
+
+        <!-- Menu de configurações -->
+        <div class="settings-menu" id="settings-menu">
+            <h3>Configurações</h3>
+            <a href="#" id="logout-btn">Deslogar</a>
+        </div>
     </div>
 
     <!-- Script de inicialização Firebase e autenticação -->
@@ -165,14 +188,24 @@
                 // Após o logout, esconder o menu e mostrar o botão de login novamente
                 document.getElementById("google-login-btn").style.display = "inline-block";
                 document.getElementById("user-menu").style.display = "none";
+                document.getElementById("settings-menu").style.display = "none"; // Esconde as configurações
                 document.getElementById("logged-in-message").innerText = ""; // Limpar a mensagem
             }).catch((error) => {
                 console.error("Erro no logout:", error);
             });
         }
 
+        // Mostrar ou esconder o menu de configurações
+        function toggleSettingsMenu() {
+            const settingsMenu = document.getElementById("settings-menu");
+            settingsMenu.style.display = settingsMenu.style.display === "none" || settingsMenu.style.display === "" ? "block" : "none";
+        }
+
         // Event Listener no botão de login
         document.getElementById("google-login-btn").addEventListener("click", loginWithGoogle);
+
+        // Event Listener no botão de configurações
+        document.getElementById("settings-btn").addEventListener("click", toggleSettingsMenu);
 
         // Event Listener no botão de logout
         document.getElementById("logout-btn").addEventListener("click", logout);
