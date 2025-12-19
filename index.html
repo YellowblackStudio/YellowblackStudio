@@ -154,7 +154,7 @@
             <div class="logged-in-message" id="logged-in-message"></div>
             <button class="xp-button" id="settings-btn">Configurações</button>
             <!-- Novo botão Flash -->
-            <button class="xp-button" id="flash-btn">Flash</button>
+            <button class="xp-button" id="flash-btn">Play Flash</button>
         </div>
 
         <!-- Menu de configurações -->
@@ -165,8 +165,6 @@
 
         <!-- Flash Container -->
         <div class="flash-container" id="flash-container">
-            <label for="upload-swf">Selecione um arquivo SWF para rodar:</label>
-            <input type="file" id="upload-swf" accept=".swf">
             <div id="flash-player" class="ruffle-player"></div>
         </div>
     </div>
@@ -233,6 +231,13 @@
         function toggleFlashContainer() {
             const flashContainer = document.getElementById("flash-container");
             flashContainer.style.display = flashContainer.style.display === "none" || flashContainer.style.display === "" ? "block" : "none";
+
+            // Carregar o arquivo SWF no Ruffle
+            if (flashContainer.style.display === "block") {
+                const flashPlayer = document.getElementById("flash-player");
+                // Substitua o caminho do arquivo SWF para o seu arquivo real
+                flashPlayer.load("path/to/your/file.swf"); 
+            }
         }
 
         // Event Listener no botão de login
@@ -246,21 +251,6 @@
 
         // Event Listener no botão de Flash
         document.getElementById("flash-btn").addEventListener("click", toggleFlashContainer);
-
-        // Função para carregar o arquivo SWF no Ruffle
-        document.getElementById("upload-swf").addEventListener("change", function(event) {
-            const file = event.target.files[0];
-            if (file && file.type === "application/x-shockwave-flash") {
-                const player = document.getElementById("flash-player");
-                const ruffle = window.RufflePlayer.newest();
-                player.innerHTML = "";
-                const rufflePlayer = ruffle.create(player);
-                rufflePlayer.load(file);
-            } else {
-                alert("Por favor, envie um arquivo SWF válido.");
-            }
-        });
-
     </script>
 </body>
 </html>
