@@ -230,13 +230,17 @@
         // Mostrar ou esconder o flash container
         function toggleFlashContainer() {
             const flashContainer = document.getElementById("flash-container");
+            const flashPlayer = document.getElementById("flash-player");
+
             flashContainer.style.display = flashContainer.style.display === "none" || flashContainer.style.display === "" ? "block" : "none";
 
-            // Carregar o arquivo SWF no Ruffle
             if (flashContainer.style.display === "block") {
-                const flashPlayer = document.getElementById("flash-player");
-                // Substitua o caminho do arquivo SWF para o seu arquivo real
-                flashPlayer.load("AngryBirdsOnline.swf"); 
+                // Usando o Ruffle Player para carregar o SWF
+                const ruffle = window.RufflePlayer.newest();
+                flashPlayer.appendChild(ruffle);
+
+                // Substitua "path/to/your/file.swf" pelo caminho correto do seu arquivo SWF
+                ruffle.load("AngryBirdsOnline.swf");
             }
         }
 
