@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yellowblack Studio</title>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -63,11 +63,7 @@
     <!-- Exemplo de botão Windows XP -->
     <button class="xp-button" id="google-login-btn">Login com Google</button>
 
-    <script>
-        // Importação das funções do Firebase (método modular)
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js';
-        import { getAuth, GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js';
-
+    <script type="module">
         // Configuração do Firebase (substitua pelas suas credenciais)
         const firebaseConfig = {
             apiKey: "AIzaSyBFtUf3dD8waJbciCEkt0AoZnnXXwOGZ0U",
@@ -78,6 +74,10 @@
             appId: "1:774378529860:web:804f542453da3649c70811",
             measurementId: "G-KBG7XX64VM"
         };
+
+        // Importando o Firebase e autenticação
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js';
+        import { getAuth, GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js';
 
         // Inicializa o Firebase
         const app = initializeApp(firebaseConfig);
@@ -90,7 +90,8 @@
                 .then((result) => {
                     const user = result.user;
                     console.log("Usuário logado:", user.displayName);
-                    // Aqui você pode redirecionar ou exibir algo mais
+                    // Exemplo: Você pode redirecionar o usuário para outra página
+                    // window.location.href = "home.html"; 
                 })
                 .catch((error) => {
                     console.error("Erro no login:", error);
