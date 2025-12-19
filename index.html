@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yellowblack Studio</title>
+
+    <!-- Importando o Firebase modular -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -63,6 +66,7 @@
     <!-- Exemplo de botão Windows XP -->
     <button class="xp-button" id="google-login-btn">Login com Google</button>
 
+    <!-- Script de inicialização Firebase e autenticação -->
     <script type="module">
         // Configuração do Firebase (substitua pelas suas credenciais)
         const firebaseConfig = {
@@ -75,7 +79,7 @@
             measurementId: "G-KBG7XX64VM"
         };
 
-        // Importando o Firebase e autenticação
+        // Importando o Firebase e a função de autenticação
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js';
         import { getAuth, GoogleAuthProvider, signInWithPopup } from 'https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js';
 
@@ -90,7 +94,7 @@
                 .then((result) => {
                     const user = result.user;
                     console.log("Usuário logado:", user.displayName);
-                    // Exemplo: Você pode redirecionar o usuário para outra página
+                    // Aqui você pode redirecionar o usuário ou exibir algo mais
                     // window.location.href = "home.html"; 
                 })
                 .catch((error) => {
