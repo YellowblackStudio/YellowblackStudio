@@ -1,146 +1,212 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yellowblack Studio</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yellowblack Studio</title>
 
-    <!-- Importando o Firebase modular -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging.js"></script>
-    
-    <!-- Ruffle (emulador Flash) -->
-    <script src="https://unpkg.com/ruffle-player@latest/ruffle.js"></script>
+  <style>
+    * { box-sizing: border-box; }
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            padding-top: 80px;
-            margin: 0;
-        }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+      padding-top: 60px;
+    }
 
-        .topbar {
-            display: flex;
-            align-items: center;
-            background: #000000;
-            height: 60px;
-            padding: 0 20px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 100;
-        }
+    /* Topbar */
+    .topbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 60px;
+      background: #000;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      z-index: 1000;
+    }
 
-        .topbar img {
-            height: 40px;
-            width: auto;
-        }
+    .topbar img {
+      height: 38px;
+    }
 
-        .main-container {
-            margin-top: 80px;
-            text-align: center;
-        }
+    /* Container */
+    .container {
+      width: min(1100px, 92vw);
+      margin: 20px auto;
+    }
 
-        .menu {
-            display: none;
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
+    /* Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
 
-        .menu a {
-            text-decoration: none;
-            color: #333;
-            display: block;
-            margin: 10px 0;
-        }
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+    }
 
-        .menu a:hover {
-            color: #000;
-        }
+    @media (max-width: 600px) {
+      .grid { grid-template-columns: 1fr; }
+    }
 
-        .xp-button {
-            font-size: 14px;
-            font-weight: bold;
-            padding: 10px 20px;
-            background: linear-gradient(to top, #e3e3e3 0%, #ffffff 100%);
-            border: 2px solid #b0b0b0;
-            border-radius: 4px;
-            box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
-            color: #000;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
+    /* Card */
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: pointer;
+      border: 1px solid #ddd;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
 
-        .xp-button:active {
-            background: #b3b3b3;
-            box-shadow: inset 1px 1px 5px rgba(0, 0, 0, 0.5);
-            border: 2px solid #808080;
-        }
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,.15);
+    }
 
-        .xp-button:hover {
-            background: #f5f5f5;
-        }
+    .thumb {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+    }
 
-        .logged-in-message {
-            font-size: 20px;
-            margin-top: 20px;
-        }
+    .duration {
+      position: absolute;
+      right: 8px;
+      bottom: 8px;
+      background: rgba(0,0,0,.75);
+      color: #fff;
+      font-size: 12px;
+      padding: 3px 6px;
+      border-radius: 6px;
+    }
 
-        .settings-menu {
-            display: none;
-            background-color: #fff;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            margin-top: 10px;
-        }
+    .info {
+      padding: 10px;
+    }
 
-        .settings-menu a {
-            display: block;
-            margin: 10px 0;
-            color: #333;
-            text-decoration: none;
-        }
+    .info h3 {
+      margin: 0;
+      font-size: 14px;
+      color: #111;
+    }
 
-        .settings-menu a:hover {
-            color: #000;
-        }
+    .info p {
+      margin: 6px 0 0;
+      font-size: 12px;
+      color: #666;
+    }
 
-        /* Flash section styling */
-        .flash-container {
-            display: none;
-            margin-top: 20px;
-        }
+    /* Player modal */
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.75);
+      z-index: 2000;
+    }
 
-        .flash-container label {
-            display: block;
-            font-size: 16px;
-            margin-bottom: 10px;
-        }
+    .player-box {
+      width: min(960px, 96vw);
+      margin: 40px auto;
+      background: #000;
+      border-radius: 12px;
+      overflow: hidden;
+    }
 
-        .flash-container input {
-            margin: 10px 0;
-        }
+    .player-top {
+      background: #111;
+      color: #fff;
+      padding: 8px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+    }
 
-        .flash-container .ruffle-player {
-            margin-top: 10px;
-            background-color: #f9f9f9;
-            padding: 20px;
-            border: 1px solid #ddd;
-        }
-    </style>
+    .player-top button {
+      background: #222;
+      color: #fff;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    video {
+      width: 100%;
+      display: block;
+      background: #000;
+    }
+  </style>
 </head>
+
 <body>
-    <!-- Barra superior -->
-    <div class="topbar">
-        <img src="logo.png" alt="Logo">
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <img src="logo.png" alt="Yellowblack Studio">
+  </div>
+
+  <!-- Vídeos -->
+  <div class="container">
+    <div class="grid">
+
+      <!-- Vídeo 1 -->
+      <div class="card" data-title="Meu vídeo 1" data-mp4="videos/video1.mp4">
+        <div class="thumb" style="background-image:url('thumb1.jpg')">
+        </div>
+        <div class="info">
+          <h3>Video 1</h3>
+        </div>
+      </div>
+
     </div>
-        <h1>Yellowblack Studio</h1>
+  </div>
+
+  <!-- Player -->
+  <div class="overlay" id="overlay">
+    <div class="player-box">
+      <div class="player-top">
+        <span id="playerTitle">Vídeo</span>
+        <button onclick="closeVideo()">Fechar</button>
+      </div>
+      <video id="video" controls>
+        <source id="videoSrc" src="" type="video/mp4">
+      </video>
+    </div>
+  </div>
+
+  <script>
+    const overlay = document.getElementById("overlay");
+    const video = document.getElementById("video");
+    const videoSrc = document.getElementById("videoSrc");
+    const playerTitle = document.getElementById("playerTitle");
+
+    document.querySelectorAll(".card").forEach(card => {
+      card.onclick = () => {
+        playerTitle.textContent = card.dataset.title;
+        videoSrc.src = card.dataset.mp4;
+        video.load();
+        overlay.style.display = "block";
+        video.play();
+      };
+    });
+
+    function closeVideo() {
+      video.pause();
+      overlay.style.display = "none";
+    }
+
+    overlay.onclick = (e) => {
+      if (e.target === overlay) closeVideo();
+    };
+  </script>
+
 </body>
 </html>
