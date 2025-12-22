@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yellowblack Studio</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+      padding-top: 60px;
+    }
+
+    /* Topbar */
+    .topbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 60px;
+      background: #000;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      z-index: 1000;
+    }
+
+    .topbar img {
+      height: 38px;
+    }
+
+    /* Container */
+    .container {
+      width: min(1100px, 92vw);
+      margin: 20px auto;
+    }
+
+    /* Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 600px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+
+    /* Card */
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: pointer;
+      border: 1px solid #ddd;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,.15);
+    }
+
+    .thumb {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+    }
+
+    .duration {
+      position: absolute;
+      right: 8px;
+      bottom: 8px;
+      background: rgba(0,0,0,.75);
+      color: #fff;
+      font-size: 12px;
+      padding: 3px 6px;
+      border-radius: 6px;
+    }
+
+    .info {
+      padding: 10px;
+    }
+
+    .info h3 {
+      margin: 0;
+      font-size: 14px;
+      color: #111;
+    }
+
+    .info p {
+      margin: 6px 0 0;
+      font-size: 12px;
+      color: #666;
+    }
+
+    /* Player modal */
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.75);
+      z-index: 2000;
+    }
+
+    .player-box {
+      width: min(960px, 96vw);
+      margin: 40px auto;
+      background: #000;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .player-top {
+      background: #111;
+      color: #fff;
+      padding: 8px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+    }
+
+    .player-top button {
+      background: #222;
+      color: #fff;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    video {
+      width: 100%;
+      display: block;
+      background: #000;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <img src="logo.png" alt="Yellowblack Studio">
+  </div>
+  <a href="https://buy.stripe.com/test_6oUdRa8Od5ha2Ia3Q7cQU00" target="_blank">
+    <button style="
+      background:#000;
+      color:#fff;
+      border:none;
+      padding:14px 26px;
+      font-size:16px;
+      border-radius:10px;
+      cursor:pointer;
+    ">
+      Assinar Trabalho Básico
+    </button>
+  </a>
+</div>
+
+</body>
+</html>
