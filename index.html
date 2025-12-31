@@ -148,58 +148,15 @@
 
 <body>
 
+  <body style="display:none">
+
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
   <!-- Topbar -->
   <div class="topbar">
     <img src="logo.png" alt="Yellowblack Studio">
   </div>
-
-  <!-- Vídeos -->
-  <div class="container">
-    <div class="grid">
-
-      <!-- Vídeo 1 -->
-      <div class="card" data-title="Vídeo 1" data-mp4="videos/video1.mp4">
-        <div class="thumb" style="background-image:url('thumb1.jpg')">
-        </div>
-        <div class="info">
-          <h3>Video 1</h3>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <br><br>
-  <div style="text-align:center;">
-  <a href="https://forms.gle/RQN322KpNBd3CAde7" target="_blank">
-    <button style="
-      background:#000;
-      color:#fff;
-      border:none;
-      padding:14px 26px;
-      font-size:16px;
-      border-radius:10px;
-      cursor:pointer;
-    ">
-      Adicionar Video
-    </button>
-  </a>
-</div>
-
-
-  <!-- Player -->
-  <div class="overlay" id="overlay">
-    <div class="player-box">
-      <div class="player-top">
-        <span id="playerTitle">Vídeo</span>
-        <button onclick="closeVideo()">Fechar</button>
-      </div>
-      <video id="video" controls>
-        <source id="videoSrc" src="" type="video/mp4">
-      </video>
-    </div>
-  </div>
-
+  
   <script>
     const overlay = document.getElementById("overlay");
     const video = document.getElementById("video");
@@ -224,6 +181,18 @@
     overlay.onclick = (e) => {
       if (e.target === overlay) closeVideo();
     };
+  </script>
+  <div id="gate">
+  <div class="cf-turnstile"
+       data-sitekey="0x4AAAAAACJ2jFeRQB25r5we"
+       data-callback="liberar"></div>
+  </div>
+  
+  <script>
+  function liberar() {
+    document.body.style.display = "block";
+    document.getElementById("gate").remove();
+  }
   </script>
 
 </body>
