@@ -146,53 +146,44 @@
   </style>
 </head>
 
-<body>
+<body style="display:none">
 
-  <body style="display:none">
-
+  <!-- Cloudflare Turnstile -->
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
-  <!-- Topbar -->
-  <div class="topbar">
-    <img src="logo.png" alt="Yellowblack Studio">
+  <!-- GATE (bloqueia o site) -->
+  <div id="gate" style="
+    position:fixed;
+    inset:0;
+    background:#000;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:9999;
+  ">
+    <div class="cf-turnstile"
+         data-sitekey="0x4AAAAAACJ2jFeRQB25r5we"
+         data-callback="liberar"></div>
   </div>
-  
+
+  <!-- SITE (fica escondido) -->
+  <div id="site">
+
+    <!-- Topbar -->
+    <div class="topbar">
+      <img src="logo.png" alt="Yellowblack Studio">
+    </div>
+
+    <!-- TODO: resto do seu site aqui -->
+    <!-- grid, cards, player, etc -->
+
+  </div>
+
   <script>
-    const overlay = document.getElementById("overlay");
-    const video = document.getElementById("video");
-    const videoSrc = document.getElementById("videoSrc");
-    const playerTitle = document.getElementById("playerTitle");
-
-    document.querySelectorAll(".card").forEach(card => {
-      card.onclick = () => {
-        playerTitle.textContent = card.dataset.title;
-        videoSrc.src = card.dataset.mp4;
-        video.load();
-        overlay.style.display = "block";
-        video.play();
-      };
-    });
-
-    function closeVideo() {
-      video.pause();
-      overlay.style.display = "none";
+    function liberar() {
+      document.body.style.display = "block";
+      document.getElementById("gate").remove();
     }
-
-    overlay.onclick = (e) => {
-      if (e.target === overlay) closeVideo();
-    };
-  </script>
-  <div id="gate">
-  <div class="cf-turnstile"
-       data-sitekey="0x4AAAAAACJ2jFeRQB25r5we"
-       data-callback="liberar"></div>
-  </div>
-  
-  <script>
-  function liberar() {
-    document.body.style.display = "block";
-    document.getElementById("gate").remove();
-  }
   </script>
 
 </body>
