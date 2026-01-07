@@ -15,6 +15,11 @@
       padding-top: 60px;
     }
 
+    /* CLASSE MÁGICA */
+    .hidden {
+      display: none !important;
+    }
+
     /* Topbar */
     .topbar {
       position: fixed;
@@ -51,8 +56,8 @@
 
     /* Tela VIP */
     .vip-screen {
-      display: none;
       height: calc(100vh - 60px);
+      display: flex;
       align-items: center;
       justify-content: center;
       flex-direction: column;
@@ -89,22 +94,21 @@
     <h1>Bem-vindo ao Yellowblack Studio</h1>
   </div>
 
-  <!-- TELA VIP -->
-  <div class="vip-screen" id="vipScreen">
+  <!-- TELA VIP (COMEÇA ESCONDIDA) -->
+  <div class="vip-screen hidden" id="vipScreen">
     <img src="qrcode.jpeg" alt="QR Code VIP">
     <button class="back-btn" onclick="closeVIP()">Voltar</button>
   </div>
 
   <script>
     function openVIP() {
-      document.getElementById("siteContent").style.display = "none";
-      const vip = document.getElementById("vipScreen");
-      vip.style.display = "flex";
+      document.getElementById("siteContent").classList.add("hidden");
+      document.getElementById("vipScreen").classList.remove("hidden");
     }
 
     function closeVIP() {
-      document.getElementById("vipScreen").style.display = "none";
-      document.getElementById("siteContent").style.display = "block";
+      document.getElementById("vipScreen").classList.add("hidden");
+      document.getElementById("siteContent").classList.remove("hidden");
     }
   </script>
 
