@@ -53,11 +53,11 @@
     .vip-screen {
       display: none;
       height: calc(100vh - 60px);
-      display: flex;
       align-items: center;
       justify-content: center;
       flex-direction: column;
       gap: 20px;
+      text-align: center;
     }
 
     .vip-screen img {
@@ -84,7 +84,7 @@
     <button class="vip-btn" onclick="openVIP()">Assinatura VIP</button>
   </div>
 
-  <!-- CONTEÚDO NORMAL DO SITE -->
+  <!-- CONTEÚDO NORMAL -->
   <div class="site-content" id="siteContent">
     <h1>Bem-vindo ao Yellowblack Studio</h1>
   </div>
@@ -98,7 +98,8 @@
   <script>
     function openVIP() {
       document.getElementById("siteContent").style.display = "none";
-      document.getElementById("vipScreen").style.display = "flex";
+      const vip = document.getElementById("vipScreen");
+      vip.style.display = "flex";
     }
 
     function closeVIP() {
