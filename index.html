@@ -23,6 +23,7 @@
       background: #000;
       display: flex;
       align-items: center;
+      justify-content: space-between;
       padding: 0 16px;
       z-index: 1000;
     }
@@ -31,158 +32,78 @@
       height: 38px;
     }
 
-    /* Container */
-    .container {
-      width: min(1100px, 92vw);
-      margin: 20px auto;
-    }
-
-    /* Grid */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-    }
-
-    @media (max-width: 900px) {
-      .grid { grid-template-columns: repeat(2, 1fr); }
-    }
-
-    @media (max-width: 600px) {
-      .grid { grid-template-columns: 1fr; }
-    }
-
-    /* Card */
-    .card {
-      background: #fff;
+    .vip-btn {
+      background: gold;
+      color: #000;
+      border: none;
+      padding: 8px 14px;
       border-radius: 10px;
-      overflow: hidden;
+      font-weight: bold;
       cursor: pointer;
-      border: 1px solid #ddd;
-      transition: transform .15s ease, box-shadow .15s ease;
     }
 
-    .card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(0,0,0,.15);
-    }
-
-    .thumb {
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      background-size: cover;
-      background-position: center;
-      position: relative;
-    }
-
-    .duration {
-      position: absolute;
-      right: 8px;
-      bottom: 8px;
-      background: rgba(0,0,0,.75);
-      color: #fff;
-      font-size: 12px;
-      padding: 3px 6px;
-      border-radius: 6px;
-    }
-
-    .info {
-      padding: 10px;
-    }
-
-    .info h3 {
-      margin: 0;
-      font-size: 14px;
-      color: #111;
-    }
-
-    .info p {
-      margin: 6px 0 0;
-      font-size: 12px;
-      color: #666;
-    }
-
-    /* Player modal */
-    .overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.75);
-      z-index: 2000;
-    }
-
-    .player-box {
-      width: min(960px, 96vw);
+    /* Conteúdo normal */
+    .site-content {
+      width: min(1100px, 92vw);
       margin: 40px auto;
-      background: #000;
-      border-radius: 12px;
-      overflow: hidden;
+      text-align: center;
     }
 
-    .player-top {
-      background: #111;
-      color: #fff;
-      padding: 8px 12px;
+    /* Tela VIP */
+    .vip-screen {
+      display: none;
+      height: calc(100vh - 60px);
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      font-size: 14px;
+      justify-content: center;
+      flex-direction: column;
+      gap: 20px;
     }
 
-    .player-top button {
-      background: #222;
+    .vip-screen img {
+      max-width: 300px;
+      width: 80%;
+    }
+
+    .back-btn {
+      background: #000;
       color: #fff;
       border: none;
-      padding: 6px 10px;
-      border-radius: 8px;
+      padding: 10px 18px;
+      border-radius: 10px;
       cursor: pointer;
-    }
-
-    video {
-      width: 100%;
-      display: block;
-      background: #000;
     }
   </style>
 </head>
 
 <body>
 
-  <!-- Cloudflare Turnstile -->
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-
-  <!-- GATE (bloqueia o site) -->
-  <div id="gate" style="
-    position:fixed;
-    inset:0;
-    background:#000;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    z-index:9999;
-  ">
-    <div class="cf-turnstile"
-         data-sitekey="0x4AAAAAACJ2jFeRQB25r5we"
-         data-callback="liberar"></div>
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <img src="logo.png" alt="Yellowblack Studio">
+    <button class="vip-btn" onclick="openVIP()">Assinatura VIP</button>
   </div>
 
-  <!-- SITE (fica escondido) -->
-  <div id="site">
+  <!-- CONTEÚDO NORMAL DO SITE -->
+  <div class="site-content" id="siteContent">
+    <h1>Bem-vindo ao Yellowblack Studio</h1>
+  </div>
 
-    <!-- Topbar -->
-    <div class="topbar">
-      <img src="logo.png" alt="Yellowblack Studio">
-    </div>
-
-    <!-- TODO: resto do seu site aqui -->
-    <!-- grid, cards, player, etc -->
-
+  <!-- TELA VIP -->
+  <div class="vip-screen" id="vipScreen">
+    <img src="qrcode.png" alt="QR Code VIP">
+    <button class="back-btn" onclick="closeVIP()">Voltar</button>
   </div>
 
   <script>
-    function liberar() {
-      document.body.style.display = "block";
-      document.getElementById("gate").remove();
+    function openVIP() {
+      document.getElementById("siteContent").style.display = "none";
+      document.getElementById("vipScreen").style.display = "flex";
+    }
+
+    function closeVIP() {
+      document.getElementById("vipScreen").style.display = "none";
+      document.getElementById("siteContent").style.display = "block";
     }
   </script>
 
