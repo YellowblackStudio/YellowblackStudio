@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp spec="1.0+" codebase="www.yourwebsite.com" href="theapp-webstart.jnlp">
+    <information>
+        <title>The Application Title</title>
+        <vendor>Your Company Name</vendor>
+        <homepage href="index.html"/>
+        <description>A description of the application.</description>
+    </information>
+    <resources>
+        <!-- Specifies the required Java version -->
+        <j2se version="1.7+"/>
+        <!-- Specifies the JAR file containing your application -->
+        <jar href="game.jar" main="true" />
+    </resources>
+    <!-- Defines the main class to run -->
+    <application-desc main-class="com.yourpackage.MainClass">
+    </application-desc>
+</jnlp>
