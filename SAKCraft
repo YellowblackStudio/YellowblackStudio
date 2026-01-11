@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SAKCraft</title>
+</head>
+<body>
+    <h1>SAKCraft</h1>
+    <p>
+        To launch the application, click the link below:
+    </p>
+    <!-- Standard HTML link to the JNLP file -->
+    <a href="start.jnlp">Click here to start the application</a>
+</body>
+</html>
