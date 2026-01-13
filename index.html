@@ -1,102 +1,59 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pasta Online com GoFile</title>
-<style>
-body {
-    font-family: Arial, sans-serif;
-    background: #1a1a1a;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    margin: 0;
-}
-h1 {
-    margin-bottom: 20px;
-}
-input, button {
-    margin: 10px;
-    padding: 10px;
-}
-button {
-    background-color: #00bfff;
-    border: none;
-    color: white;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 16px;
-}
-button:hover {
-    background-color: #009acd;
-}
-#link {
-    margin-top: 15px;
-    word-break: break-word;
-    color: #00bfff;
-}
-</style>
+  <meta charset="UTF-8" />
+  <title>PlayBack — Upload de Vídeos (Supabase)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 <body>
+  <h1>PlayBack</h1>
 
-<h1>Pasta Online – Upload via GoFile</h1>
+  <input type="file" id="video" accept="video/*" />
+  <br><br>
+  <input type="text" id="titulo" placeholder="Título do vídeo" />
+  <br><br>
+  <button id="enviar">Enviar vídeo</button>
 
-<input type="file" id="fileInput" required>
-<button onclick="upload()">Enviar Arquivo</button>
+  <p id="status"></p>
 
-<p id="status"></p>
-<p id="link"></p>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const supabaseUrl = "SUA_URL_DO_SUPABASE";
+    const supabaseKey = "SUA_PUBLIC_ANON_KEY";
+    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-<script>
-async function upload() {
-    const fileInput = document.getElementById('fileInput');
-    if (!fileInput.files.length) {
-        alert("Escolha um arquivo!");
+    document.getElementById('enviar').onclick = async () => {
+      const file = document.getElementById('video').files[0];
+      const titulo = document.getElementById('titulo').value;
+      const status = document.getElementById('status');
+
+      if (!file || !titulo) {
+        status.innerText = "Preencha tudo";
         return;
-    }
+      }
 
-    const file = fileInput.files[0];
-    const status = document.getElementById('status');
-    const linkDiv = document.getElementById('link');
+      const nomeArquivo = Date.now() + "-" + file.name;
 
-    status.textContent = "Enviando...";
-    linkDiv.textContent = "";
+      const { error } = await supabase.storage
+        .from('videos')
+        .upload(nomeArquivo, file);
 
-    try {
-        // 1️⃣ Pegar servidor GoFile
-        const serverRes = await fetch('https://api.gofile.io/getServer');
-        const serverData = await serverRes.json();
-        const server = serverData.data.server;
+      if (error) {
+        status.innerText = "Erro no upload";
+        return;
+      }
 
-        // 2️⃣ Criar FormData com arquivo
-        const formData = new FormData();
-        formData.append("file", file);
+      const { data } = supabase.storage
+        .from('videos')
+        .getPublicUrl(nomeArquivo);
 
-        // 3️⃣ Upload para GoFile
-        const uploadRes = await fetch(`https://${server}.gofile.io/uploadFile`, {
-            method: 'POST',
-            body: formData
-        });
+      await supabase.from('videos').insert({
+        titulo: titulo,
+        url: data.publicUrl
+      });
 
-        const uploadData = await uploadRes.json();
-
-        if (uploadData.status === "ok") {
-            status.textContent = "Upload concluído!";
-            const fileLink = uploadData.data.downloadPage;
-            linkDiv.innerHTML = `Link para download:<br><a href="${fileLink}" target="_blank">${fileLink}</a>`;
-        } else {
-            status.textContent = "Erro no upload, tente novamente.";
-        }
-    } catch (err) {
-        console.error(err);
-        status.textContent = "Erro no upload, tente novamente.";
-    }
-}
-</script>
-
+      status.innerText = "Vídeo enviado com sucesso";
+    };
+  </script>
 </body>
 </html>
