@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>PlayBack — Upload de Vídeos (Supabase)</title>
+  <title>PlayBack<title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 <body>
@@ -16,43 +16,64 @@
 
   <p id="status"></p>
 
+  <!-- SDK do Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <script>
+    // CONFIGURAÇÃO
     const supabaseUrl = "https://tkgcqxmzvkslrnsowzia.supabase.co";
     const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRrZ2NxeG16dmtzbHJuc293emlhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgzMTc4NDgsImV4cCI6MjA4Mzg5Mzg0OH0.AimXEB5_eed1jd1uYQWYWzrT-3OVD8sO_YvuCaXTmIo";
-    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+    // CRIAR CLIENT (NOME DIFERENTE PRA NÃO DAR ERRO)
+    const sb = supabase.createClient(supabaseUrl, supabaseKey);
 
     document.getElementById('enviar').onclick = async () => {
       const file = document.getElementById('video').files[0];
       const titulo = document.getElementById('titulo').value;
       const status = document.getElementById('status');
 
+      status.innerText = "Enviando...";
+
       if (!file || !titulo) {
-        status.innerText = "Preencha tudo";
+        status.innerText = "Escolha um vídeo e um título";
         return;
       }
 
       const nomeArquivo = Date.now() + "-" + file.name;
 
-      const { error } = await supabase.storage
+      // UPLOAD PARA O STORAGE
+      const { error: uploadError } = await sb.storage
         .from('videos')
-        .upload(nomeArquivo, file);
+        .upload(nomeArquivo, file, { upsert: false });
 
-      if (error) {
+      if (uploadError) {
+        console.error(uploadError);
         status.innerText = "Erro no upload";
         return;
       }
 
-      const { data } = supabase.storage
+      // PEGAR URL PÚBLICA
+      const { data } = sb.storage
         .from('videos')
         .getPublicUrl(nomeArquivo);
 
-      await supabase.from('videos').insert({
-        titulo: titulo,
-        url: data.publicUrl
-      });
+      // SALVAR NO BANCO
+      const { error: insertError } = await sb
+        .from('videos')
+        .insert({
+          titulo: titulo,
+          url: data.publicUrl
+        });
 
-      status.innerText = "Vídeo enviado com sucesso";
+      if (insertError) {
+        console.error(insertError);
+        status.innerText = "Erro ao salvar no banco";
+        return;
+      }
+
+      status.innerText = "Vídeo publicado com sucesso!";
+      document.getElementById('video').value = "";
+      document.getElementById('titulo').value = "";
     };
   </script>
 </body>
