@@ -1,80 +1,67 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <title>PlayBack<title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yellowblack Studios</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .content {
+            flex: 1 1 70%; /* ocupa 70% da largura */
+            padding: 20px;
+        }
+
+        .ad-right {
+            flex: 1 1 30%; /* ocupa 30% da largura */
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* Responsivo para telas pequenas */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            .content, .ad-right {
+                flex: 1 1 100%;
+            }
+        }
+    </style>
 </head>
 <body>
-  <h1>PlayBack</h1>
+    <div class="container">
+        <!-- Conteúdo do site -->
+        <div class="content">
+            <h1>Bem-vindo ao meu site!</h1>
+            <p>Você pode baixar videos e apps aqui!</p>
+        </div>
 
-  <input type="file" id="video" accept="video/*" />
-  <br><br>
-  <input type="text" id="titulo" placeholder="Título do vídeo" />
-  <br><br>
-  <button id="enviar">Enviar vídeo</button>
-
-  <p id="status"></p>
-
-  <!-- SDK do Supabase -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <script>
-    // CONFIGURAÇÃO
-    const supabaseUrl = "https://tkgcqxmzvkslrnsowzia.supabase.co";
-    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRrZ2NxeG16dmtzbHJuc293emlhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgzMTc4NDgsImV4cCI6MjA4Mzg5Mzg0OH0.AimXEB5_eed1jd1uYQWYWzrT-3OVD8sO_YvuCaXTmIo";
-
-    // CRIAR CLIENT (NOME DIFERENTE PRA NÃO DAR ERRO)
-    const sb = supabase.createClient(supabaseUrl, supabaseKey);
-
-    document.getElementById('enviar').onclick = async () => {
-      const file = document.getElementById('video').files[0];
-      const titulo = document.getElementById('titulo').value;
-      const status = document.getElementById('status');
-
-      status.innerText = "Enviando...";
-
-      if (!file || !titulo) {
-        status.innerText = "Escolha um vídeo e um título";
-        return;
-      }
-
-      const nomeArquivo = Date.now() + "-" + file.name;
-
-      // UPLOAD PARA O STORAGE
-      const { error: uploadError } = await sb.storage
-        .from('videos')
-        .upload(nomeArquivo, file, { upsert: false });
-
-      if (uploadError) {
-        console.error(uploadError);
-        status.innerText = "Erro no upload";
-        return;
-      }
-
-      // PEGAR URL PÚBLICA
-      const { data } = sb.storage
-        .from('videos')
-        .getPublicUrl(nomeArquivo);
-
-      // SALVAR NO BANCO
-      const { error: insertError } = await sb
-        .from('videos')
-        .insert({
-          titulo: titulo,
-          url: data.publicUrl
-        });
-
-      if (insertError) {
-        console.error(insertError);
-        status.innerText = "Erro ao salvar no banco";
-        return;
-      }
-
-      status.innerText = "Vídeo publicado com sucesso!";
-      document.getElementById('video').value = "";
-      document.getElementById('titulo').value = "";
-    };
-  </script>
+        <!-- Anúncio na direita -->
+        <div class="ad-right">
+            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3015888806610246"
+                 crossorigin="anonymous"></script>
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-3015888806610246"
+                 data-ad-slot="2434111044"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+    </div>
 </body>
 </html>
