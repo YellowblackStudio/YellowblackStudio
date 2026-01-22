@@ -1,95 +1,12 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>SupPost</title>
-  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-  <style>
-    body { font-family: Arial; background:#f5f5f5; padding:20px }
-    #app { max-width:500px; margin:auto; background:white; padding:20px; border-radius:10px }
-    textarea { width:100%; height:80px }
-    button { margin-top:10px }
-    .post { border-bottom:1px solid #ddd; padding:10px 0 }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yellowblack - Build & Imagine</title>
 </head>
 <body>
-  <div id="app">
-    <h2>SupPost</h2>
+    <img src="logo1.png" alt="Yellowblack Logo">
 
-    <div id="auth">
-      <input id="email" placeholder="email"><br><br>
-      <input id="password" type="password" placeholder="senha"><br><br>
-      <button onclick="login()">Login / Registrar</button>
-    </div>
-
-    <div id="main" style="display:none">
-      <textarea id="content" placeholder="O que você está pensando?"></textarea>
-      <button onclick="postar()">Postar</button>
-      <h3>Posts</h3>
-      <div id="posts"></div>
-    </div>
-  </div>
-
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script>
-const supabaseClient = supabase.createClient(
-  'https://hrbnmexufsdghkvwnhgg.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhyYm5tZXh1ZnNkZ2hrdnduaGdnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg3NDg5MTcsImV4cCI6MjA4NDMyNDkxN30.IyTW6Ra3ouakjrffhJhO4tTGDQSf3fgLQUAiUbD4P3c'
-);
-
-async function login() {
-  const emailValue = document.getElementById('email').value;
-  const passwordValue = document.getElementById('password').value;
-
-  try {
-    const { error } = await supabaseClient.auth.signInWithPassword({
-      email: emailValue,
-      password: passwordValue
-    });
-
-    if (error) {
-      await supabaseClient.auth.signUp({ email: emailValue, password: passwordValue });
-    }
-
-    init();
-  } catch (err) {
-    console.error(err);
-  }
-}
-
-async function init() {
-  document.getElementById('auth').style.display = 'none';
-  document.getElementById('main').style.display = 'block';
-  carregarPosts();
-}
-
-async function postar() {
-  const user = (await supabaseClient.auth.getUser()).data.user;
-  const contentValue = document.getElementById('content').value;
-
-  await supabaseClient.from('posts').insert({
-    user_id: user.id,
-    content: contentValue
-  });
-
-  document.getElementById('content').value = '';
-  carregarPosts();
-}
-
-async function carregarPosts() {
-  const { data } = await supabaseClient
-    .from('posts')
-    .select('*')
-    .order('created_at', { ascending: false });
-
-  const postsDiv = document.getElementById('posts');
-  postsDiv.innerHTML = '';
-  data.forEach(p => {
-    postsDiv.innerHTML += `<div class="post">${p.content}</div>`;
-  });
-}
-</script>
-
-</script>
 </body>
 </html>
