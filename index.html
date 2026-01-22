@@ -4,9 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yellowblack - Build & Imagine</title>
+
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background: linear-gradient(to bottom, #0066ff, #000000);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        img {
+            max-width: 300px;
+        }
+    </style>
 </head>
 <body>
+
     <img src="logo1.png" alt="Yellowblack Logo">
+    <audio id="audio" src="som.wav" loop></audio>
+
+    <script>
+        document.addEventListener("click", () => {
+            const a = document.getElementById("audio");
+            a.play();
+        }, { once: true });
+    </script>
 
 </body>
 </html>
