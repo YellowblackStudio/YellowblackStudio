@@ -1,36 +1,77 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yellowblack - Build & Imagine</title>
-
+    <title>Yellowblack Studios</title>
     <style>
         body {
             margin: 0;
-            height: 100vh;
-            background: linear-gradient(to bottom, #0066ff, #000000);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f2f2f2;
         }
 
-        img {
-            max-width: 300px;
+        .topbar {
+            height: 60px;
+            background: #1e1e1e;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .tix {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #2b2b2b;
+            padding: 6px 10px;
+            border-radius: 6px;
+        }
+
+        .tix img {
+            width: 24px;
+            height: 24px;
         }
     </style>
 </head>
 <body>
 
-    <img src="logo1.png" alt="Yellowblack Logo">
-    <audio id="audio" src="som.wav" loop></audio>
+    <div class="topbar">
+        <div class="logo">Yellowblack Studios</div>
+
+        <div class="tix">
+            <img src="https://static.wikia.nocookie.net/roblox/images/6/62/TixROBLOX.png/revision/latest?cb=20200308121313">
+            <span id="tixCount">0</span>
+        </div>
+    </div>
 
     <script>
-        document.addEventListener("click", () => {
-            const a = document.getElementById("audio");
-            a.play();
-        }, { once: true });
+        const ONE_DAY = 24 * 60 * 60 * 1000;
+
+        let tix = parseInt(localStorage.getItem("tix"));
+        let lastCollect = parseInt(localStorage.getItem("lastCollect"));
+        let now = Date.now();
+
+        if (isNaN(tix)) {
+            tix = 10;
+            lastCollect = now;
+        } else {
+            if (now - lastCollect >= ONE_DAY) {
+                let days = Math.floor((now - lastCollect) / ONE_DAY);
+                tix += days * 10;
+                lastCollect += days * ONE_DAY;
+            }
+        }
+
+        localStorage.setItem("tix", tix);
+        localStorage.setItem("lastCollect", lastCollect);
+        document.getElementById("tixCount").textContent = tix;
     </script>
 
 </body>
